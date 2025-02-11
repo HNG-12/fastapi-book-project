@@ -1,1 +1,1 @@
-web: /bin/bash -c "nginx -g 'daemon off;' & uvicorn main:app --host=0.0.0.0 --port=8000"
+web: bin/start-nginx uvicorn main:app --host=0.0.0.0 --port=${PORT:-8000}
