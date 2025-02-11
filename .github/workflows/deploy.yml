@@ -22,7 +22,7 @@ jobs:
         with:
           step: start
           token: ${{ secrets.GITHUB_TOKEN }}
-          environment: production
+          env: production
 
       - name: Deploy to EC2 instance
         uses: appleboy/ssh-action@master
@@ -62,4 +62,5 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
           status: ${{ job.status }}
-          environment_url: http://ec2-44-208-163-66.compute-1.amazonaws.com
+          env: ${{ steps.deployment.outputs.env }}
+          env_url: http://ec2-44-208-163-66.compute-1.amazonaws.com
