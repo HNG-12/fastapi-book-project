@@ -19,6 +19,12 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            # Set up SSH authentication for GitHub
+            echo "${{ secrets.HNG }}" > ~/.ssh/hng
+            chmod 600 ~/.ssh/hng
+            eval $(ssh-agent)
+            ssh-add ~/.ssh/hng
+            
             cd /home/ubuntu/fastapi-book-project || exit 1
             
             echo "Pulling latest code from GitHub"
