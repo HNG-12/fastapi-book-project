@@ -1,3 +1,0 @@
-#!/bin/bash
-# Start Nginx with the custom configuration
-nginx -c /app/nginx.conf
