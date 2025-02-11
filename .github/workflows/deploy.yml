@@ -20,7 +20,7 @@ jobs:
         uses: bobheadxi/deployments@v1
         id: deployment
         with:
-          step: create
+          step: start
           token: ${{ secrets.GITHUB_TOKEN }}
           env: production
 
