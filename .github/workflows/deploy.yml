@@ -13,14 +13,24 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup SSH Key and GitHub SSH Key
-        run: | 
-          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/hng-stage-2.pem && chmod 600 ~/.ssh/hng-stage-2.pem
-          echo "${{ secrets.HNG }}" > ~/.ssh/hng && chmod 600 ~/.ssh/hng
-          eval "$(ssh-agent -s)" && ssh-add ~/.ssh/hng && ssh-add -l
+        run: |
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/hng-stage-2.pem || exit 1
+          
+          chmod 600 ~/.ssh/hng-stage-2.pem
+          
+          echo "${{ secrets.HNG }}" > ~/.ssh/hng
+          
+          chmod 600 ~/.ssh/hng
+          
+          eval "$(ssh-agent -s)"
+          
+          ssh-add ~/.ssh/hng
+          
+          ssh-add -l
 
       - name: Deploy to EC2 Instance
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/hng-stage-2.pem ubuntu@${{ secrets.EC2_HOST || 'ec2-44-208-163-66.compute-1.amazonaws.com' }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/hng-stage-2.pem ${{ secrets.EC2.USER }}@${{ secrets.EC2_HOST || 'ec2-44-208-163-66.compute-1.amazonaws.com' }} << 'EOF'
             cd /home/ubuntu/fastapi-book-project || exit 1
             git pull origin main || exit 1
             source /home/ubuntu/fastapi-book-project/venv/bin/activate
