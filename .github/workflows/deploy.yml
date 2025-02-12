@@ -37,19 +37,18 @@ jobs:
             eval $(ssh-agent)
             ssh-add ~/.ssh/hng
             
-            cd /home/ubuntu/fastapi-book-project || exit 1
+            cd ~/fastapi-book-project || exit 1
             
             echo "Pulling latest code from GitHub"
             git pull origin main || exit 1
             
             echo "Activating virtual environment"
-            source /home/ubuntu/fastapi-book-project/venv/bin/activate
+            source ~/fastapi-book-project/venv/bin/activate
             
             echo "Installing dependencies"
             pip install -r requirements.txt
             
             echo "Restarting FastAPI app"
-            sudo systemctl daemon-reload
             sudo systemctl restart fastapi-app
             
             echo "Deployment completed successfully"
