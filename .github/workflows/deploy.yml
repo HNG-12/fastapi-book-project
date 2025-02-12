@@ -18,15 +18,13 @@ jobs:
           chmod 600 hng-stage-2.pem
           
           echo "${{ secrets.HNG }}" > hng || exit 1
-          chmod 600 hng
-          
-          eval "$(ssh-agent -s)"
-          ssh-add hng
           
           mkdir -p ~/.ssh
-          echo "Host github.com" >> ~/.ssh/config
-          echo "  IdentityFile $(pwd)/hng" >> ~/.ssh/config
-          echo "  StrictHostKeyChecking no" >> ~/.ssh/config   
+          mv hng ~/.ssh
+          chmod 600 ~/.ssh/hng
+          
+          eval "$(ssh-agent -s)"
+          ssh-add ~/.ssh/hng
 
       - name: Deploy to EC2 Instance
         run: |
